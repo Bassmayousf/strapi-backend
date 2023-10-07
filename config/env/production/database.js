@@ -1,16 +1,14 @@
-const parse = require('pg-connection-string').parse;
-const config = parse(process.env.DATABASE_URL);
 module.exports = ({ env }) => ({
   connection: {
-    client: 'postgres',
+    client: 'mysql',
     connection: {
-      host: config.host,
-      port: config.port,
-      database: config.database,
-      user: config.user,
-      password: config.password,
+      host: env('DATABASE_HOST', '127.0.0.1'),
+      port: env.int('DATABASE_PORT', 3306),
+      database: env('DATABASE_NAME', 'strapi'),
+      user: env('DATABASE_USERNAME', 'strapi'),
+      password: env('DATABASE_PASSWORD', 'strapi'),
       ssl: {
-        rejectUnauthorized: false
+        ca :env('DATABASE_CA'), // For self-signed certificates
       },
     },
     debug: false,
